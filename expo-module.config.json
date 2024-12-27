@@ -1,0 +1,17 @@
+{
+  "platforms": [
+    "apple",
+    "android",
+    "web"
+  ],
+  "apple": {
+    "modules": [
+      "CashfreePaymentsModule"
+    ]
+  },
+  "android": {
+    "modules": [
+      "expo.modules.cashfreepayments.CashfreePaymentsModule"
+    ]
+  }
+}
