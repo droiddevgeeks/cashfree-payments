@@ -1,9 +1,8 @@
 import { NativeModule, requireNativeModule } from 'expo';
 
 declare class CashfreePaymentsModule extends NativeModule {
-  PI: number;
-  hello(): string;
-  doWebCheckoutPayment(paymentObject: string): void;
+  doWebPayment(paymentObject: string): void;
+  setCallback(): void;
   setValueAsync(value: string): Promise<void>;
 }
 

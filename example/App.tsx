@@ -1,6 +1,6 @@
-import { useEvent } from 'expo';
-import * as CashfreePayments from 'cashfree-payments';
+import { CFErrorResponse, CFPaymentGatewayService }  from 'cashfree-payments';
 import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { useEffect } from 'react';
 
 export default function App() {
   const paymentObject = {
@@ -9,11 +9,26 @@ export default function App() {
       navigationBarTextColor: "#FFFFFF",
     },
     session: {
-      payment_session_id: "session_Welsi3_ItGa3V1pAOMTD_9rE-G1uFxMYeQuxWaHx30G6xDxG2x0WCatUU5jr3IREOZMkRT1iE5MBoIMLgkxwjHMqsGaYbWwr80SgNEgRngAQ4bbr_00dIeMpayment",
-      orderID: "devstudio_919724",
+      payment_session_id: "session_gmXfigYZ2ZO2J5Piecw-LsK-539KaF7JgRoMtHd6-tZ704r7wS2-mJx5-MaFYBlEszI57jrG9QMyPXnUDyafDbY7c2VnolycvGyKWJDyvKeuiF994EETOwcpayment",
+      orderID: "devstudio_57275123",
       environment: "SANDBOX",
     },
   }
+
+  useEffect(() => {
+    const cfCallback = CFPaymentGatewayService.setCallback({
+      onVerify: (orderID: string) => {
+        console.log('Payment Verify Order:', orderID);
+      },
+      onError: (error: CFErrorResponse, orderID: string) => {
+        console.log('Payment Failed:', error.getMessage(), 'for Order:', orderID);
+      },
+    });
+
+    return () => {
+      cfCallback.forEach((subscription) => subscription.remove());
+    }
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,8 +36,8 @@ export default function App() {
         <Text style={styles.header}>Module API Example</Text>
         <Group name="Functions">
           <Button
-            title="doWebCheckoutPayment"
-            onPress={() => CashfreePayments.doWebCheckoutPayment(JSON.stringify(paymentObject))}/>
+            title="Web Checkout Payment"
+            onPress={() => CFPaymentGatewayService.doWebPayment(paymentObject)}/>
         </Group>
       </ScrollView>
     </SafeAreaView>
