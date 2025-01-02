@@ -3,6 +3,7 @@ package expo.modules.cashfreepayments
 import android.content.Context
 import androidx.core.os.bundleOf
 import com.cashfree.pg.api.CFPaymentGatewayService
+import com.cashfree.pg.api.util.DropPaymentParser
 import com.cashfree.pg.base.logger.CFLoggerService
 import com.cashfree.pg.core.api.CFSession
 import com.cashfree.pg.core.api.base.CFPayment
@@ -47,9 +48,6 @@ class CashfreePaymentsModule : Module() {
 
 
     override fun definition() = ModuleDefinition {
-        // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
-        // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-        // The module will be accessible from `requireNativeModule('CashfreePayments')` in JavaScript.
         Name("CashfreePayments")
 
         Events(CF_VERIFY, CF_FAILURE)
@@ -117,6 +115,32 @@ class CashfreePaymentsModule : Module() {
                 exception.printStackTrace()
             }
         }
+
+        Function("doUPIPayment") { paymentObject: String ->
+            CFLoggerService.getInstance().d("CashfreePayments", "doUPIPayment::: $paymentObject")
+            try {
+
+                val upiIntentCheckoutPayment = DropPaymentParser.getUPICheckoutPayment(paymentObject)
+                upiIntentCheckoutPayment.cfsdkFramework = CFPayment.CFSDKFramework.REACT_NATIVE
+                upiIntentCheckoutPayment.cfSDKFlavour = CFPayment.CFSDKFlavour.INTENT
+
+                currentActivity?.let {
+                    CFPaymentGatewayService.getInstance()
+                        .doPayment(currentActivity!!, upiIntentCheckoutPayment)
+                } ?: run {
+                    CFLoggerService.getInstance().e(
+                        "CashfreePayments",
+                        "Activity is null. Cannot proceed with the payment."
+                    )
+                }
+            } catch (exception: Exception) {
+                CFLoggerService
+                    .getInstance()
+                    .e("CashfreePayments", "doUPIPayment::: ${exception.message}")
+                exception.printStackTrace()
+            }
+        }
+
 
         // Defines a JavaScript function that always returns a Promise and whose native code
         // is by default dispatched on the different thread than the JavaScript runtime runs on.

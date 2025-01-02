@@ -1,7 +1,6 @@
-// Reexport the native module. On web, it will be resolved to CashfreePaymentsModule.web.ts
-// and on native platforms to CashfreePaymentsModule.ts
 import  CashfreePayments  from './CashfreePaymentsModule';
 import { EventSubscription } from 'expo-modules-core';
+import { CheckoutPayment  } from 'cashfree-pg-api-contract';
 
 export class CFErrorResponse {
     private status: string = 'FAILED';
@@ -83,6 +82,10 @@ class CFPaymentGateway {
 
     doWebPayment(paymentObject: any): void {
         CashfreePayments.doWebPayment(JSON.stringify(paymentObject));
+    }
+
+    doUPIPayment(checkoutPayment: CheckoutPayment){
+        CashfreePayments.doUPIPayment(JSON.stringify(checkoutPayment));
     }
 }
 

@@ -3167,6 +3167,11 @@ caniuse-lite@^1.0.30001688:
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001690.tgz"
   integrity sha512-5ExiE3qQN6oF8Clf8ifIDcMRCRE/dMGcETG/XGMD8/XiXm6HXQgQTh1yZYLXXpSOsEUlJm1Xr7kGULZTuGtP/w==
 
+cashfree-pg-api-contract@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.npmjs.org/cashfree-pg-api-contract/-/cashfree-pg-api-contract-2.0.7.tgz"
+  integrity sha512-EvqwnhOslFT/38BQ16Hbat+YFsyBM/aHp0J5tkzaG6/5SF2dEyezlFg40GVDhD+gkNVX2jxhwSIhhwtDDoSx9g==
+
 chalk@^2.0.1:
   version "2.4.2"
   resolved "https://registry.npmjs.org/chalk/-/chalk-2.4.2.tgz"
